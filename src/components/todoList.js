@@ -2,7 +2,8 @@ import React from 'react';
 
 export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 	const handleDone = (e) => {
-		todos[e.target.id].done = !todos[e.target.id].done;
+		const index = e.target.id;
+		todos[index].done = !todos[index].done;
 		localStorage.setItem('todos', JSON.stringify(todos));
 		setTodos([...todos]);
 	};
@@ -23,23 +24,15 @@ export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 	return (
 		<ul className="todoList">
 			{todos.map((item, i) => (
-				<li
-					style={{
-						backgroundColor: `${item.done ? 'grey' : ''}`,
-						paddingBottom: `${item.done ? '18px' : ''}`,
-					}}
-					key={i}
-				>
+				<li className={`${item.done && 'done-todo'}`} key={i}>
 					<span
-						style={{
-							textDecoration: `${item.done ? 'line-through' : ''}`,
-						}}
+						className={`${item.done && 'done-span'}`}
 						data-testid={`todo${i}`}
 					>
 						{item.text}
 					</span>
 					<div>
-						<label style={{ marginRight: '30px' }}>
+						<label className="checkbox">
 							<input
 								id={i}
 								type="checkbox"
@@ -53,12 +46,7 @@ export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 								Edit
 							</button>
 						)}
-						<button
-							id={i}
-							onClick={handleDelete}
-							style={{ float: 'right' }}
-							className="delete-btn"
-						>
+						<button onClick={handleDelete} id={i} className="delete-btn">
 							Delete
 						</button>
 					</div>

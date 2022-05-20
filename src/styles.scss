@@ -40,7 +40,8 @@ body {
 	background-color: rgba(255, 255, 255, 0.5);
 	padding: 10px;
 	margin-bottom: 10px;
-	border-radius: 2px;
+	border: #333 solid;
+	border-radius: 10px;
 	list-style: none;
 	min-height: 50px;
 	min-width: 270px;
@@ -60,8 +61,20 @@ button.edit-btn {
 
 button.delete-btn {
 	background-color: red;
+	float: right;
 }
 
-input:invalid {
-	border-color: red;
+.done-todo {
+	background-color: lightgray !important;
+	padding-bottom: 18px !important;
+}
+
+.done-span {
+	text-decoration: line-through;
+}
+
+.checkbox {
+	margin-right: 30px;
+	margin-top: 8px;
+	float: left;
 }
