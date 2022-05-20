@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { TodoList } from './components/todoList';
+import TodoEdit from './components/TodoEdit';
 
 import './styles.scss';
 
 export default function App() {
 	const [todos, setTodos] = useState([]);
 	const [todo, setTodo] = useState('');
+	const [edit, setEdit] = useState(false);
+	const [todoIndex, setTodoIndex] = useState(-1);
+	const [invalidInput, setInvalidInput] = useState(false);
 
 	const addDefaultTodos = () => {
 		todos.push({ text: 'Buy milk', done: true });
@@ -27,22 +31,57 @@ export default function App() {
 		getLocalStorageTodos();
 	}, []);
 
+	useEffect(() => {
+		setInvalidInput(false);
+	}, [todo]);
+
 	const handleAddTodo = (e) => {
 		e.preventDefault();
-		todos.unshift({ text: todo, done: false });
-		localStorage.setItem('todos', JSON.stringify(todos));
-		setTodos([...todos]);
-		setTodo('');
+		if (todo === '') {
+			setInvalidInput(true);
+		} else {
+			todos.unshift({ text: todo, done: false });
+			localStorage.setItem('todos', JSON.stringify(todos));
+			setTodos([...todos]);
+			setTodo('');
+		}
 	};
 
 	return (
 		<div className="todoListApp">
 			<div className="forsta-logo" />
-			<div className="addTodo">
-				<input value={todo} onChange={(e) => setTodo(e.target.value)} />
-			</div>
-			<button onClick={handleAddTodo}>Add New Todo</button>
-			<TodoList todos={todos} />
+			{edit ? (
+				<TodoEdit
+					setEdit={setEdit}
+					setTodo={setTodo}
+					todos={todos}
+					setTodos={setTodos}
+					todoIndex={todoIndex}
+				/>
+			) : (
+				<>
+					<div className="addTodo">
+						<input
+							autoFocus
+							placeholder="Enter Todo"
+							value={todo}
+							onChange={(e) => setTodo(e.target.value)}
+						/>
+					</div>
+					{invalidInput && (
+						<div>
+							<label style={{ color: 'red' }}>You must enter Todo name</label>
+						</div>
+					)}
+					<button onClick={handleAddTodo}>Add New Todo</button>
+					<TodoList
+						todos={todos}
+						setTodos={setTodos}
+						setTodoIndex={setTodoIndex}
+						setEdit={setEdit}
+					/>
+				</>
+			)}
 		</div>
 	);
 }

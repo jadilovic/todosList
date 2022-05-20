@@ -17,7 +17,7 @@ body {
 	padding: 5px;
 	font-size: 16px;
 	border: 1px solid #d9d9d9;
-	width: 165px;
+	width: 240px;
 }
 .todoListApp button {
 	padding: 5px;
@@ -42,6 +42,8 @@ body {
 	margin-bottom: 10px;
 	border-radius: 2px;
 	list-style: none;
+	min-height: 50px;
+	min-width: 270px;
 }
 ul.todoList {
 	padding: 0;
@@ -52,15 +54,14 @@ button {
 	min-width: 80px;
 }
 
-#edit-btn {
+button.edit-btn {
 	background-color: green;
 }
 
-#delete-btn {
+button.delete-btn {
 	background-color: red;
 }
 
-#status-btn {
-	background-color: yellow;
-	color: black;
+input:invalid {
+	border-color: red;
 }

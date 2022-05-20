@@ -1,21 +1,39 @@
 import React from 'react';
 
-// type TodoListProps = {
-//   todos: any[];
-// };
-// export const TodoList = ({ todos }: TodoListProps) => {
-export const TodoList = ({ todos }) => {
-	const [checked, setChecked] = React.useState(false);
-
-	const handleChange = () => {
-		setChecked(!checked);
+export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
+	const handleDone = (e) => {
+		todos[e.target.id].done = !todos[e.target.id].done;
+		localStorage.setItem('todos', JSON.stringify(todos));
+		setTodos([...todos]);
 	};
+
+	const handleDelete = (e) => {
+		const todoIndex = e.target.id;
+		todos.splice(todoIndex, 1);
+		localStorage.setItem('todos', JSON.stringify(todos));
+		setTodos([...todos]);
+	};
+
+	const handleEdit = (e) => {
+		const todoIndex = e.target.id;
+		setTodoIndex(todoIndex);
+		setEdit(true);
+	};
+
 	return (
 		<ul className="todoList">
 			{todos.map((item, i) => (
-				<li style={{ backgroundColor: `${item.done ? 'grey' : ''}` }} key={i}>
+				<li
+					style={{
+						backgroundColor: `${item.done ? 'grey' : ''}`,
+						paddingBottom: `${item.done ? '18px' : ''}`,
+					}}
+					key={i}
+				>
 					<span
-						style={{ textDecoration: 'line-through' }}
+						style={{
+							textDecoration: `${item.done ? 'line-through' : ''}`,
+						}}
 						data-testid={`todo${i}`}
 					>
 						{item.text}
@@ -23,17 +41,26 @@ export const TodoList = ({ todos }) => {
 					<div>
 						<label style={{ marginRight: '30px' }}>
 							<input
+								id={i}
 								type="checkbox"
-								checked={checked}
-								onChange={handleChange}
+								checked={item.done}
+								onChange={handleDone}
 							/>
 							Done
 						</label>
-						{/* <button id="status-btn">{`${
-							item.done ? 'Done' : 'Pending'
-						}`}</button> */}
-						<button id="edit-btn">Edit</button>
-						<button id="delete-btn">Delete</button>
+						{!item.done && (
+							<button onClick={handleEdit} id={i} className="edit-btn">
+								Edit
+							</button>
+						)}
+						<button
+							id={i}
+							onClick={handleDelete}
+							style={{ float: 'right' }}
+							className="delete-btn"
+						>
+							Delete
+						</button>
 					</div>
 				</li>
 			))}
