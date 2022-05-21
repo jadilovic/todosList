@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TodoList } from './components/todoList';
+import { MemoizedTodoList } from './components/todoList';
 import TodoEdit from './components/TodoEdit';
 
 import './styles.scss';
@@ -16,6 +16,7 @@ export default function App() {
 		todos.push({ text: 'Buy bread', done: false });
 		setTodos([...todos]);
 		localStorage.setItem('todos', JSON.stringify(todos));
+		return todos;
 	};
 
 	const getLocalStorageTodos = () => {
@@ -31,9 +32,11 @@ export default function App() {
 		getLocalStorageTodos();
 	}, []);
 
-	useEffect(() => {
+	const handleChange = (e) => {
+		e.preventDefault();
 		setInvalidInput(false);
-	}, [todo]);
+		setTodo(e.target.value);
+	};
 
 	const handleAddTodo = (e) => {
 		e.preventDefault();
@@ -65,7 +68,8 @@ export default function App() {
 							autoFocus
 							placeholder="Enter Todo"
 							value={todo}
-							onChange={(e) => setTodo(e.target.value)}
+							onChange={handleChange}
+							data-testid="input"
 						/>
 					</div>
 					{invalidInput && (
@@ -73,8 +77,10 @@ export default function App() {
 							<label style={{ color: 'red' }}>You must enter Todo name</label>
 						</div>
 					)}
-					<button onClick={handleAddTodo}>Add New Todo</button>
-					<TodoList
+					<button data-testid="add-button" onClick={handleAddTodo}>
+						Add New Todo
+					</button>
+					<MemoizedTodoList
 						todos={todos}
 						setTodos={setTodos}
 						setTodoIndex={setTodoIndex}

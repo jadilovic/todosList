@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
+const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 	const handleDone = (e) => {
 		const index = e.target.id;
 		todos[index].done = !todos[index].done;
@@ -24,7 +24,11 @@ export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 	return (
 		<ul className="todoList">
 			{todos.map((item, i) => (
-				<li className={`${item.done && 'done-todo'}`} key={i}>
+				<li
+					className={`${item.done && 'done-todo'}`}
+					data-testid={`todo`}
+					key={i}
+				>
 					<span
 						className={`${item.done && 'done-span'}`}
 						data-testid={`todo${i}`}
@@ -34,6 +38,7 @@ export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 					<div>
 						<label className="checkbox">
 							<input
+								data-testid={`checked${i}`}
 								id={i}
 								type="checkbox"
 								checked={item.done}
@@ -55,3 +60,5 @@ export const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 		</ul>
 	);
 };
+
+export const MemoizedTodoList = memo(TodoList);

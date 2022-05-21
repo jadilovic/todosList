@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const TodoEdit = ({ setEdit, setTodo, setTodos, todoIndex, todos }) => {
 	const todoObject = todos.at(todoIndex);
 	const [editedTodo, setEditedTodo] = useState(todoObject.text);
 	const [invalidInput, setInvalidInput] = useState(false);
-
-	useEffect(() => {
-		setInvalidInput(false);
-	}, [editedTodo]);
 
 	const handleEditTodo = (e) => {
 		setInvalidInput(false);
@@ -23,14 +19,16 @@ const TodoEdit = ({ setEdit, setTodo, setTodos, todoIndex, todos }) => {
 		}
 	};
 
+	const handleChange = (e) => {
+		e.preventDefault();
+		setInvalidInput(false);
+		setEditedTodo(e.target.value);
+	};
+
 	return (
 		<>
 			<div className="addTodo">
-				<input
-					autoFocus
-					value={editedTodo}
-					onChange={(e) => setEditedTodo(e.target.value)}
-				/>
+				<input autoFocus value={editedTodo} onChange={handleChange} />
 				{invalidInput && (
 					<div>
 						<label style={{ color: 'red' }}>You must enter Todo name</label>
