@@ -74,7 +74,9 @@ export default function App() {
 					</div>
 					{invalidInput && (
 						<div>
-							<label style={{ color: 'red' }}>You must enter Todo name</label>
+							<label data-testid="error-label" style={{ color: 'red' }}>
+								You must enter Todo name
+							</label>
 						</div>
 					)}
 					<button data-testid="add-button" onClick={handleAddTodo}>

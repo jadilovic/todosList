@@ -47,11 +47,21 @@ const TodoList = ({ todos, setTodos, setTodoIndex, setEdit }) => {
 							Done
 						</label>
 						{!item.done && (
-							<button onClick={handleEdit} id={i} className="edit-btn">
+							<button
+								data-testid={`edit-button${i}`}
+								onClick={handleEdit}
+								id={i}
+								className="edit-btn"
+							>
 								Edit
 							</button>
 						)}
-						<button onClick={handleDelete} id={i} className="delete-btn">
+						<button
+							data-testid={`delete-button${i}`}
+							onClick={handleDelete}
+							id={i}
+							className="delete-btn"
+						>
 							Delete
 						</button>
 					</div>
